@@ -10,7 +10,7 @@ function Home() {
         <h1 className="text-xl font-bold max-sm:hidden">Hi, I'm Luca Manuel</h1>
         <p className="mb-2">
           I specialize in front-end development, working with frameworks like
-          React, Next.js, Angular, and Vue. Using tools like Tailwind CSS,
+          React, Next.js. Using tools like Tailwind CSS,
           NextUI, and Framer Motion, I create responsive, visually appealing
           interfaces. My focus is on delivering seamless user experiences.
         </p>
