@@ -20,36 +20,17 @@ export default function Projects() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        console.log('=== SUPABASE DEBUG ===');
-        console.log('URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
-        console.log('Key exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-        
-        console.log('Fetching projects from Supabase...');
-        const { data, error, status, statusText } = await supabase
+        const { data, error } = await supabase
           .from('projects')
           .select('*')
           .order('created_at', { ascending: false });
 
-        console.log('=== RESPONSE ===');
-        console.log('Status:', status, statusText);
-        console.log('Data:', data);
-        console.log('Error:', error);
-        console.log('Number of projects:', data?.length || 0);
-
         if (error) {
-          console.error('❌ Error fetching projects:', error);
           toast.error(`Failed to load projects: ${error.message}`);
         } else {
-          console.log(`✅ Loaded ${data?.length || 0} projects`);
           setProjects(data || []);
-          if (!data || data.length === 0) {
-            toast.info('No projects found in database');
-          } else {
-            toast.success(`Loaded ${data.length} projects!`);
-          }
         }
       } catch (error) {
-        console.error('❌ Catch error:', error);
         toast.error('An error occurred');
       } finally {
         setLoading(false);
@@ -87,21 +68,20 @@ export default function Projects() {
           <p className="text-sm text-muted-foreground">Add some projects in your Supabase database to see them here!</p>
         </div>
       ) : (
-        <div className="flex max-sm:flex-col flex-row gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {projects.map((project) => (
           <div key={project.id}>
             <Card className="py-4 h-full shadow-md">
               <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                 <h4 className="font-bold text-large">{project.name}</h4>
-                <p className="text-sm text-primary/60 md:max-w-[230px] max-sm:text-base">{project.description}</p>
+                <p className="text-sm text-primary/60">{project.description}</p>
               </CardHeader>
               <CardBody className="overflow-visible py-2 gap-3 flex justify-between">
                 {project.image && (
                   <Image
                     alt="Card background"
-                    className="object-cover rounded-xl md:w-60 "
+                    className="object-cover rounded-xl w-full"
                     src={project.image}
-                    width="full"
                   />
                 )}
                 <div className="flex flex-col gap-2">
