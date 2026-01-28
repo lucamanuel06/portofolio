@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Link } from "@nextui-org/react";
 import { Home } from "lucide-react";
 import localFont from "next/font/local";

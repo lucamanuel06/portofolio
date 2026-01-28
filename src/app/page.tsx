@@ -1,4 +1,5 @@
-/* eslint-disable react/no-unescaped-entities */
+"use client";
+
 import { Button, Link } from "@nextui-org/react";
 import { Github, Mail } from "lucide-react";
 
