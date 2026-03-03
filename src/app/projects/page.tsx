@@ -1,11 +1,12 @@
 "use client";
 
 import localFont from "next/font/local";
+import Link from "next/link";
 import { Card, CardHeader, CardBody, Image, Button } from "@nextui-org/react";
-import { Github, MoveRight } from "lucide-react";
+import { MoveRight } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { supabase, Project } from "@/lib/supabase";
+import { getSupabaseClient, Project } from "@/lib/supabase";
 
 const azonix = localFont({
   src: "../fonts/Azonix.otf",
@@ -20,18 +21,19 @@ export default function Projects() {
   useEffect(() => {
     async function fetchProjects() {
       try {
+        const supabase = getSupabaseClient();
         const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .order('created_at', { ascending: false });
+          .from("projects")
+          .select("*")
+          .order("created_at", { ascending: false });
 
         if (error) {
           toast.error(`Failed to load projects: ${error.message}`);
         } else {
           setProjects(data || []);
         }
-      } catch (error) {
-        toast.error('An error occurred');
+      } catch {
+        toast.error("An error occurred");
       } finally {
         setLoading(false);
       }
@@ -39,13 +41,6 @@ export default function Projects() {
 
     fetchProjects();
   }, []);
-  const handleButtonClick = (link: string | URL | undefined, type: string) => {
-    if (!link) {
-      toast.error(`${type} link is not available!`);
-    } else {
-      window.open(link, "_blank", "noopener,noreferrer");
-    }
-  };
 
   if (loading) {
     return (
@@ -85,19 +80,13 @@ export default function Projects() {
                   />
                 )}
                 <div className="flex flex-col gap-2">
-                <Button
-                  onClick={() => handleButtonClick(project.github, "GitHub")}
-                  className="bg-[#1A1E23] text-white"
-                >
-                  <Github />View the code at GitHub
-                </Button>
-                <Button
-                  onClick={() => handleButtonClick(project.website, "Website")}
-                  className=""
-                  variant="bordered"
-                >
-                  Visit the website <MoveRight />
-                </Button>
+                  <Button
+                    as={Link}
+                    href={`/projects/${project.id}`}
+                    className="bg-[#1A1E23] text-white"
+                  >
+                    See more details <MoveRight />
+                  </Button>
                 </div>
                 
               </CardBody>
