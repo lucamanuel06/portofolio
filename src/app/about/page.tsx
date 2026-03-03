@@ -13,7 +13,7 @@ const azonix = localFont({
 export default function About() {
 
   return (
-    <div className="mx-auto md:p-12 min-h-screen pt-3 p-2 container absolute z-0 inset-0">
+    <div className="mx-auto md:p-12 min-h-screen pt-3 p-2 container">
       <div className="mb-8">
         <h1 className={`text-4xl font-bold ${azonix.className} text-center`}>
           About me

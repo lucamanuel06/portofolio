@@ -70,7 +70,7 @@ export default function Contact() {
   }
   }
   return (
-    <main className="w-full md:p-12 min-h-screen mx-auto container pt-3 absolute z-0 inset-0">
+    <main className="w-full md:p-12 min-h-screen mx-auto container pt-3">
       <div className="flex justify-between flex-col text-center p-3 h-full">
         <div>
           <h1 className={`${azonix.className} antialiased text-5xl`}>

@@ -41,7 +41,7 @@ export default async function ProjectDetailsPage({
   const project = data as ProjectRow;
 
   return (
-    <main className="w-full md:p-12 min-h-screen mx-auto container p-3 pt-3 absolute z-0 inset-0">
+    <main className="w-full md:p-12 min-h-screen mx-auto container p-3 pt-3">
       <h1 className={`${azonix.className} text-4xl text-center pb-4`}>
         {project.name}
       </h1>
