@@ -22,12 +22,12 @@ export function getSupabaseClient() {
 }
 
 // Database types (je kunt deze later genereren met de Supabase CLI)
-export interface Project {
-  id: string;
-  name: string;
-  description: string;
-  image?: string;
-  github?: string;
-  website?: string;
-  created_at?: string;
-}
+  export interface Project {
+    id: string;
+    name: string;
+    description: string;
+    image?: string;
+    github?: string;
+    website?: string;
+    created_at?: string;
+  }

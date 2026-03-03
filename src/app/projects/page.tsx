@@ -1,12 +1,10 @@
 "use client";
 
 import localFont from "next/font/local";
-import Link from "next/link";
-import { Card, CardHeader, CardBody, Image, Button } from "@nextui-org/react";
-import { MoveRight } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { getSupabaseClient, Project } from "@/lib/supabase";
+import { ProjectCard } from "@/components/project-card";
 
 const azonix = localFont({
   src: "../fonts/Azonix.otf",
@@ -65,34 +63,10 @@ export default function Projects() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {projects.map((project) => (
-          <div key={project.id}>
-            <Card className="py-4 h-full shadow-md">
-              <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                <h4 className="font-bold text-large">{project.name}</h4>
-                <p className="text-sm text-primary/60">{project.description}</p>
-              </CardHeader>
-              <CardBody className="overflow-visible py-2 gap-3 flex justify-between">
-                {project.image && (
-                  <Image
-                    alt="Card background"
-                    className="object-cover rounded-xl w-full"
-                    src={project.image}
-                  />
-                )}
-                <div className="flex flex-col gap-2">
-                  <Button
-                    as={Link}
-                    href={`/projects/${project.id}`}
-                    className="bg-[#1A1E23] text-white"
-                  >
-                    See more details <MoveRight />
-                  </Button>
-                </div>
-                
-              </CardBody>
-            </Card>
-          </div>
-        ))}
+            <div key={project.id}>
+              <ProjectCard project={project} />
+            </div>
+          ))}
         </div>
       )}
     </main>
