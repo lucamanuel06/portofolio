@@ -44,7 +44,7 @@ export default function Projects() {
 
   if (loading) {
     return (
-      <main className="w-full md:p-12 min-h-screen mx-auto container p-3 pt-3">
+      <main className="w-full md:p-12 min-h-screen mx-auto container p-3 pt-3 absolute z-0 inset-0">
         <h1 className={`${azonix.className} text-4xl text-center pb-4`}>My projects</h1>
         <div className="flex justify-center items-center h-64">
           <p>Loading projects...</p>
@@ -54,7 +54,7 @@ export default function Projects() {
   }
 
   return (
-    <main className="w-full md:p-12 min-h-screen mx-auto container p-3 pt-3">
+    <main className="w-full md:p-12 min-h-screen mx-auto container p-3 pt-3 absolute z-0 inset-0">
       <h1 className={`${azonix.className} text-4xl text-center pb-4`}>My projects</h1>
       
       {projects.length === 0 ? (

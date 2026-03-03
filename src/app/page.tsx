@@ -5,7 +5,7 @@ import { Github, Mail } from "lucide-react";
 
 function Home() {
   return (
-    <main className="w-full flex flex-col md:pt-10 max-sm:ps-5 max-sm:pt-8 md:ps-16 min-h-screen mx-auto container p-3 pt-3">
+    <main className="w-full flex flex-col md:pt-10 max-sm:ps-5 max-sm:pt-8 md:ps-16 min-h-screen mx-auto container p-3 pt-3 absolute z-0 inset-0">
       <h1 className="text-4xl font-bold">Luca Manuel</h1>
       <div className="md:pt-60 md:max-w-3xl">
         <h1 className="text-xl font-bold max-sm:hidden">Hi, I'm Luca Manuel</h1>
