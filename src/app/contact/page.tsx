@@ -83,7 +83,7 @@ export default function Contact() {
             </div>
             <div className="">
               <Textarea rows={3} value={message} label="Message" className="pb-3" onChange={(e) => {setMessage(e.target.value)}}/>
-              <Button onClick={() => sendData()} className="bg-primary text-white p-3 rounded-md w-full">
+              <Button onClick={() => sendData()} className="bg-primary text-white dark:text-black p-3 rounded-md w-full">
                 Send
               </Button>
             </div>
