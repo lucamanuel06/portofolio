@@ -3,6 +3,27 @@
 import { useMemo, useState, useTransition } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+
+const mdComponents = {
+  h1: ({ children }: any) => (
+    <h1 className="text-2xl font-bold mt-2 mb-2">{children}</h1>
+  ),
+  h2: ({ children }: any) => (
+    <h2 className="text-xl font-bold mt-2 mb-2">{children}</h2>
+  ),
+  h3: ({ children }: any) => (
+    <h3 className="text-lg font-semibold mt-2 mb-1">{children}</h3>
+  ),
+  p: ({ children }: any) => <p className="mb-2">{children}</p>,
+  ul: ({ children }: any) => <ul className="list-disc pl-5 mb-2">{children}</ul>,
+  ol: ({ children }: any) => <ol className="list-decimal pl-5 mb-2">{children}</ol>,
+  a: ({ children, href }: any) => (
+    <a className="text-blue-400 underline" href={href} target="_blank" rel="noreferrer">
+      {children}
+    </a>
+  ),
+};
+
 import {
   Button,
   Input,
@@ -278,7 +299,7 @@ export default function AdminProjectsClient({
                 <div className="rounded border p-3">
                   <div className="text-xs text-muted-foreground mb-2">Preview</div>
                   <div className="prose prose-invert max-w-none">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
                       {createState.description || "_Nothing to preview yet._"}
                     </ReactMarkdown>
                   </div>
@@ -398,25 +419,33 @@ export default function AdminProjectsClient({
               <ModalHeader>Edit description (Markdown)</ModalHeader>
               <ModalBody>
                 {!editState ? null : (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-2">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 min-h-[60vh]">
+                    <div className="flex flex-col gap-2 h-full">
                       <Textarea
                         label="Markdown"
                         value={editState.description}
                         onValueChange={(v) =>
                           setEditState((s) => (s ? { ...s, description: v } : s))
                         }
-                        minRows={18}
+                        minRows={24}
+                        className="h-full"
+                        classNames={{
+                          inputWrapper: "h-full",
+                          input: "h-full",
+                        }}
                       />
                       <div className="text-xs text-muted-foreground">
-                        Tip: use **bold**, lists, and links.
+                        Tip: use **bold**, # headings, lists, and links.
                       </div>
                     </div>
 
-                    <div className="rounded border p-3">
+                    <div className="rounded border p-3 h-full overflow-auto">
                       <div className="text-xs text-muted-foreground mb-2">Preview</div>
-                      <div className="prose prose-invert max-w-none">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      <div className="max-w-none text-sm leading-relaxed">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={mdComponents}
+                        >
                           {editState.description || "_Nothing to preview yet._"}
                         </ReactMarkdown>
                       </div>
