@@ -3,7 +3,7 @@ import AdminProjectsClient, { type ProjectRow } from "./AdminProjectsClient";
 
 export const dynamic = "force-dynamic";
 
-async function fetchProjects(): Promise<ProjectRow[]> {
+export async function fetchProjects(): Promise<ProjectRow[]> {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
     .from("projects")

@@ -43,6 +43,7 @@ import {
 import { toast } from "sonner";
 
 import { createProject, deleteProject, updateProject } from "./actions";
+import { fetchProjects } from "./page";
 
 export type ProjectRow = {
   id: string;
@@ -118,6 +119,7 @@ export default function AdminProjectsClient({
   async function refresh() {
     // lightweight: we optimistically update local state instead of refetching.
     // A full refresh will still happen via revalidatePath server-side.
+    fetchProjects();
   }
 
   async function onCreate() {
