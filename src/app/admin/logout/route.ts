@@ -3,12 +3,14 @@ import { clearAdminCookie } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(request: Request) {
+export async function POST() {
   await clearAdminCookie();
 
-  const url = new URL(request.url);
-  url.pathname = "/admin/login";
-  url.search = "";
-
-  return NextResponse.redirect(url);
+  // Use a relative redirect so it works behind proxies (Coolify) and in dev.
+  return new NextResponse(null, {
+    status: 302,
+    headers: {
+      Location: "/admin/login",
+    },
+  });
 }
