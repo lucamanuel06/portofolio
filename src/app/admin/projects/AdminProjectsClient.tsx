@@ -2,28 +2,7 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-
-const mdComponents = {
-  h1: ({ children }: any) => (
-    <h1 className="text-2xl font-bold mt-2 mb-2">{children}</h1>
-  ),
-  h2: ({ children }: any) => (
-    <h2 className="text-xl font-bold mt-2 mb-2">{children}</h2>
-  ),
-  h3: ({ children }: any) => (
-    <h3 className="text-lg font-semibold mt-2 mb-1">{children}</h3>
-  ),
-  p: ({ children }: any) => <p className="mb-2">{children}</p>,
-  ul: ({ children }: any) => <ul className="list-disc pl-5 mb-2">{children}</ul>,
-  ol: ({ children }: any) => <ol className="list-decimal pl-5 mb-2">{children}</ol>,
-  a: ({ children, href }: any) => (
-    <a className="text-blue-400 underline" href={href} target="_blank" rel="noreferrer">
-      {children}
-    </a>
-  ),
-};
+import { Markdown } from "@/components/markdown";
 
 import {
   Button,
@@ -306,11 +285,9 @@ export default function AdminProjectsClient({
 
                 <div className="rounded border p-3">
                   <div className="text-xs text-muted-foreground mb-2">Preview</div>
-                  <div className="prose prose-invert max-w-none">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-                      {createState.description || "_Nothing to preview yet._"}
-                    </ReactMarkdown>
-                  </div>
+                  <Markdown className="max-w-none text-sm leading-relaxed">
+                    {createState.description || "_Nothing to preview yet._"}
+                  </Markdown>
                 </div>
 
                 <Input
@@ -449,14 +426,9 @@ export default function AdminProjectsClient({
 
                     <div className="rounded border p-3 h-full overflow-auto">
                       <div className="text-xs text-muted-foreground mb-2">Preview</div>
-                      <div className="max-w-none text-sm leading-relaxed">
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          components={mdComponents}
-                        >
-                          {editState.description || "_Nothing to preview yet._"}
-                        </ReactMarkdown>
-                      </div>
+                      <Markdown className="max-w-none text-sm leading-relaxed">
+                        {editState.description || "_Nothing to preview yet._"}
+                      </Markdown>
                     </div>
                   </div>
                 )}
