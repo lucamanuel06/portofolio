@@ -108,11 +108,14 @@ export default async function AdminProjectsPage() {
               <div key={p.id} className="rounded border p-4">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                   <div className="lg:col-span-1">
-                    <ProjectCard
-                      // ProjectCard expects the Project interface shape; this is compatible.
-                      project={p as any}
-                      showDetailsButton={true}
-                    />
+                    <div className="sticky top-6">
+                      <ProjectCard
+                        // ProjectCard expects the Project interface shape; this is compatible.
+                        project={p as any}
+                        showDetailsButton={true}
+                        previewLines={2}
+                      />
+                    </div>
                   </div>
 
                   <div className="lg:col-span-2">

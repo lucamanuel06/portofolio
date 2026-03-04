@@ -4,9 +4,6 @@ import Link from "next/link";
 import { Card, CardHeader, CardBody, Image, Button } from "@nextui-org/react";
 import { MoveRight } from "lucide-react";
 import type { Project } from "@/lib/supabase";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-
 type Props = {
   project: Project;
   /** Show the CTA button that links to /projects/[id] */
@@ -24,9 +21,9 @@ export function ProjectCard({
 }: Props) {
   return (
     <Card className={`py-4 h-full shadow-md ${className ?? ""}`.trim()}>
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-        <h4 className="font-bold text-large">{project.name}</h4>
-        <div
+      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start gap-1">
+        <h4 className="font-bold text-large line-clamp-1 w-full">{project.name}</h4>
+        <p
           className="text-sm text-primary/60 overflow-hidden"
           style={{
             display: "-webkit-box",
@@ -34,20 +31,20 @@ export function ProjectCard({
             WebkitBoxOrient: "vertical",
           }}
         >
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {project.description}
-          </ReactMarkdown>
-        </div>
+          {project.description}
+        </p>
       </CardHeader>
 
-      <CardBody className="overflow-visible py-2 gap-3 flex justify-between">
+      <CardBody className="overflow-visible py-2 gap-3 flex flex-col justify-between">
         {project.image ? (
           <Image
             alt={project.name}
-            className="object-cover rounded-xl w-full"
+            className="object-cover rounded-xl w-full h-[180px]"
             src={project.image}
           />
-        ) : null}
+        ) : (
+          <div className="w-full h-[180px] rounded-xl bg-white/5 border border-white/10" />
+        )}
 
         {showDetailsButton ? (
           <Button

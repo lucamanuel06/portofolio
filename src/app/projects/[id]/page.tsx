@@ -1,6 +1,8 @@
 import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export const dynamic = "force-dynamic";
 
@@ -56,7 +58,11 @@ export default async function ProjectDetailsPage({
           />
         ) : null}
 
-        <p className="text-base leading-relaxed">{project.description}</p>
+        <div className="prose prose-invert max-w-none">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {project.description}
+          </ReactMarkdown>
+        </div>
 
         <div className="flex gap-3 flex-wrap">
           {project.github ? (
