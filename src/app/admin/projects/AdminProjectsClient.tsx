@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -43,7 +44,6 @@ import {
 import { toast } from "sonner";
 
 import { createProject, deleteProject, updateProject } from "./actions";
-import { fetchProjects } from "./page";
 
 export type ProjectRow = {
   id: string;
@@ -66,8 +66,14 @@ export default function AdminProjectsClient({
 }: {
   projects: ProjectRow[];
 }) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [projects, setProjects] = useState<ProjectRow[]>(initialProjects);
+
+  // Keep local state in sync with server-rendered props after router.refresh()
+  useEffect(() => {
+    setProjects(initialProjects);
+  }, [initialProjects]);
 
   // create modal
   const [createOpen, setCreateOpen] = useState(false);
@@ -116,10 +122,10 @@ export default function AdminProjectsClient({
     setEditOpen(true);
   }
 
-  async function refresh() {
-    // lightweight: we optimistically update local state instead of refetching.
-    // A full refresh will still happen via revalidatePath server-side.
-    fetchProjects();
+  function refresh() {
+    // Ask Next.js to re-render the server component for this route
+    // so we get the latest projects from Supabase.
+    router.refresh();
   }
 
   async function onCreate() {
