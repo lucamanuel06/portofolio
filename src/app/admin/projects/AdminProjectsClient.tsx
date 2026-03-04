@@ -177,9 +177,16 @@ export default function AdminProjectsClient({
           </p>
         </div>
 
-        <Button color="primary" onPress={() => setCreateOpen(true)}>
-          New project
-        </Button>
+        <div className="flex gap-2">
+          <form action="/admin/logout" method="post">
+            <Button type="submit" variant="bordered">
+              Logout
+            </Button>
+          </form>
+          <Button color="primary" onPress={() => setCreateOpen(true)}>
+            New project
+          </Button>
+        </div>
       </div>
 
       <Table aria-label="Existing projects" removeWrapper>
