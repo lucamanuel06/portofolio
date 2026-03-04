@@ -36,7 +36,19 @@ export function ProjectCard({
       </CardHeader>
 
       <CardBody className="overflow-visible py-2 gap-3 flex flex-col justify-between">
-        {project.image ? (
+        {project.website ? (
+          <div className="w-full h-[180px] rounded-xl overflow-hidden border border-white/10 bg-black/20">
+            <iframe
+              title={`${project.name} preview`}
+              src={project.website}
+              className="w-full h-full scale-[0.35] origin-top-left pointer-events-none"
+              style={{ width: "285%", height: "285%" }}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+            />
+          </div>
+        ) : project.image ? (
           <Image
             alt={project.name}
             className="object-cover rounded-xl w-full h-[180px]"
