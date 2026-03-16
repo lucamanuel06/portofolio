@@ -1,3 +1,7 @@
+// NavProjects component — momenteel uitgeschakeld (uitgecommentarieerd)
+// Dit component toonde vroeger een lijst van projecten in de zijbalk
+// met dropdown acties zoals verwijderen en doorsturen
+
 // "use client";
 
 // import {
@@ -17,6 +21,8 @@
 //   useSidebar,
 // } from "@/components/ui/sidebar";
 
+// // Projecten navigatie component voor de zijbalk
+// // projects: lijst van projecten met naam, URL en icoon
 // export function NavProjects({
 //   projects,
 // }: {
@@ -26,9 +32,11 @@
 //     icon: LucideIcon;
 //   }[];
 // }) {
+//   // Haal de mobiele status op uit de zijbalk context
 //   const { isMobile } = useSidebar();
 
 //   return (
+//     // Groep verborgen als de zijbalk is ingeklapt naar pictogramweergave
 //     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
 //       <SidebarGroupLabel>Projects</SidebarGroupLabel>
 //       <SidebarMenu>
