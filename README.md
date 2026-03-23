@@ -1,25 +1,89 @@
-# My Portfolio Website
+# Portfolio Website
 
-Welcome to my portfolio! Here, I showcase my projects, skills, and experience as a front-end developer.
+Persoonlijke portfolio website gebouwd met Next.js, waarin ik mijn projecten, vaardigheden en ervaring als developer showcase.
 
 ## Features
 
-- **Project Showcase**: Explore the projects I’ve worked on, including descriptions and links to live demos or repositories.
-- **About Me**: Learn more about my background, education, and passion for front-end development.
-- **Contact**: Easily get in touch with me via a contact form or social media links.
+- **Project Showcase** — Dynamische projectenlijst opgehaald uit Supabase, met markdown beschrijvingen en iframe previews
+- **Admin Panel** — Beveiligd beheerpaneel voor het toevoegen, bewerken en verwijderen van projecten (CRUD)
+- **Contact Formulier** — Contactformulier met server-side e-mailverzending via Resend
+- **Dark/Light Mode** — Thema-wisselaar met persistentie
+- **Responsive Design** — Volledig responsive met een inklapbare sidebar navigatie
 
-## Technologies
+## Tech Stack
 
-This website is built using:
-- **React** and **Next.js** for fast and dynamic pages.
-- **Tailwind CSS** for clean and modern styling.
-- **Framer Motion** for animations.
-- **ShadCN UI** and **Sonner** for a user-friendly interface and notifications.
+| Categorie | Technologie |
+|-----------|------------|
+| Framework | Next.js 16 (App Router) |
+| Taal | TypeScript (strict mode) |
+| Styling | Tailwind CSS |
+| UI Componenten | ShadCN UI, NextUI |
+| Animaties | Framer Motion |
+| Database | Supabase (PostgreSQL) |
+| E-mail | Resend |
+| Authenticatie | Custom admin auth met cookie-based sessions |
 
-## Feedback
+## Installatie
 
-I’m always open to feedback! If you have any comments or suggestions, feel free to reach out via the contact page.
+### Vereisten
 
----
+- Node.js 18+
+- pnpm
 
-Thank you for visiting!
+### Stappen
+
+1. **Clone de repository**
+   ```bash
+   git clone https://github.com/lucamanuel06/portofolio.git
+   cd portofolio
+   ```
+
+2. **Installeer dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Configureer environment variabelen**
+
+   Maak een `.env.local` bestand aan in de root van het project:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=<jouw-supabase-url>
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=<jouw-supabase-anon-key>
+   SUPABASE_SERVICE_ROLE_KEY=<jouw-supabase-service-role-key>
+   RESEND_API_KEY=<jouw-resend-api-key>
+   ADMIN_PASSWORD=<jouw-admin-wachtwoord>
+   ```
+
+4. **Start de development server**
+   ```bash
+   pnpm dev
+   ```
+
+   De applicatie draait nu op [http://localhost:3000](http://localhost:3000).
+
+### Productie build
+
+```bash
+pnpm build
+pnpm start
+```
+
+## Projectstructuur
+
+```
+src/
+├── app/                    # Next.js App Router pagina's
+│   ├── admin/              # Admin panel (login, CRUD projecten)
+│   ├── about/              # Over mij pagina
+│   ├── contact/            # Contactformulier
+│   ├── dashboard/          # Dashboard layout
+│   └── projects/           # Projecten overzicht + detail pagina
+├── components/             # React componenten
+│   ├── ui/                 # ShadCN UI componenten
+│   ├── app-sidebar.tsx     # Hoofdnavigatie sidebar
+│   ├── markdown.tsx        # Markdown renderer
+│   └── project-card.tsx    # Herbruikbare projectkaart
+├── hooks/                  # Custom React hooks
+├── lib/                    # Services (email, supabase, auth)
+└── utils/                  # Hulpfuncties
+```
