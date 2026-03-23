@@ -16,7 +16,6 @@ import {
 
 // Importeer de navigatiemenu component
 import { NavMain } from "@/components/nav-main";
-// import { NavProjects } from "@/components/nav-projects";
 
 // Importeer zijbalk UI-componenten
 import {
