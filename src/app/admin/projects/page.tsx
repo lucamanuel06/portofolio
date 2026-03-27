@@ -33,7 +33,7 @@ export default async function AdminProjectsPage() {
 
   return (
     // Hoofdcontainer met responsive padding en flexbox layout
-    <main className="min-h-screen mx-auto container p-6 flex flex-col gap-6">
+    <main className="min-h-screen mx-auto container px-4 py-4 sm:p-6 flex flex-col gap-4 sm:gap-6">
       {/* Render de client component met de opgehaalde projecten als begindata */}
       <AdminProjectsClient projects={projects} />
     </main>

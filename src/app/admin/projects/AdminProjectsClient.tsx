@@ -203,10 +203,10 @@ export default function AdminProjectsClient({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Paginaheader met titel en actieknoppen */}
-      <div className="flex items-center justify-between gap-3">
+      {/* Paginaheader met titel en actieknoppen — gestapeld op mobiel, naast elkaar op desktop */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold">Admin · Projects</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Admin · Projects</h1>
           <p className="text-sm text-muted-foreground">
             Manage projects (create/edit/delete). Description supports Markdown.
           </p>
@@ -216,109 +216,158 @@ export default function AdminProjectsClient({
         <div className="flex gap-2">
           {/* Uitlogformulier — POST naar de logout route */}
           <form action="/admin/logout" method="post">
-            <Button type="submit" variant="bordered">
+            <Button type="submit" variant="bordered" size="sm">
               Logout
             </Button>
           </form>
           {/* Knop om het aanmaken modal te openen */}
-          <Button color="primary" onPress={() => setCreateOpen(true)}>
+          <Button color="primary" onPress={() => setCreateOpen(true)} size="sm">
             New project
           </Button>
         </div>
       </div>
 
-      {/* Projectentabel met alle bestaande projecten */}
-      <Table aria-label="Existing projects" removeWrapper>
-        <TableHeader>
-          <TableColumn>Name</TableColumn>
-          <TableColumn>Description</TableColumn>
-          <TableColumn>Updated</TableColumn>
-          <TableColumn>Actions</TableColumn>
-        </TableHeader>
-        <TableBody emptyContent="No projects yet.">
-          {projects.map((p) => (
-            <TableRow key={p.id}>
-              {/* Projectnaam en ID cel */}
-              <TableCell>
-                <div className="font-semibold max-w-[220px] truncate">{p.name}</div>
-                <div className="text-xs text-muted-foreground truncate max-w-[220px]">
-                  {p.id}
+      {/* Mobiele weergave: card layout — alleen zichtbaar op kleine schermen */}
+      <div className="flex flex-col gap-3 md:hidden">
+        {projects.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-8">No projects yet.</p>
+        ) : (
+          projects.map((p) => (
+            <div key={p.id} className="rounded-lg border p-4 flex flex-col gap-3">
+              {/* Projectnaam en datum */}
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="font-semibold">{p.name}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {p.created_at ? new Date(p.created_at).toLocaleDateString() : "-"}
+                  </div>
                 </div>
-              </TableCell>
+              </div>
+
               {/* Beschrijvingspreview — afgekapt op 2 regels */}
-              <TableCell>
-                <div className="text-sm text-primary/70 max-w-[520px] overflow-hidden" style={{
-                  display: "-webkit-box",
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical",
-                }}>
-                  {p.description}
-                </div>
-              </TableCell>
-              {/* Aanmaakdatum geformatteerd als lokale datum */}
-              <TableCell>
-                <div className="text-sm text-muted-foreground">
-                  {p.created_at ? new Date(p.created_at).toLocaleDateString() : "-"}
-                </div>
-              </TableCell>
-              {/* Actieknoppen: bewerken en verwijderen */}
-              <TableCell>
-                <div className="flex flex-col gap-2">
+              <div className="text-sm text-primary/70 overflow-hidden" style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}>
+                {p.description}
+              </div>
+
+              {/* Actieknoppen */}
+              <div className="flex gap-2">
+                <Button size="sm" variant="bordered" onPress={() => openEdit(p.id)} className="flex-1">
+                  Edit
+                </Button>
+                <Button
+                  size="sm"
+                  color="danger"
+                  variant="flat"
+                  onPress={() => setConfirmDeleteId((cur) => (cur === p.id ? null : p.id))}
+                  className="flex-1"
+                >
+                  Delete
+                </Button>
+              </div>
+
+              {/* Inline verwijderbevestiging */}
+              {confirmDeleteId === p.id ? (
+                <div className="rounded border border-red-500/30 bg-red-500/10 p-3 text-sm">
+                  <div className="mb-2">
+                    Weet je zeker dat je <b>{p.name}</b> wilt verwijderen?
+                  </div>
                   <div className="flex gap-2">
-                    {/* Bewerken knop — opent het edit modal */}
-                    <Button size="sm" variant="bordered" onPress={() => openEdit(p.id)}>
-                      Edit
+                    <Button size="sm" color="danger" onPress={() => onDelete(p.id)} isLoading={isPending} className="flex-1">
+                      Ja, verwijderen
                     </Button>
-                    {/* Verwijder knop — toont inline bevestiging */}
-                    <Button
-                      size="sm"
-                      color="danger"
-                      variant="flat"
-                      onPress={() =>
-                        // Toggle de bevestigingsweergave: toon als nog niet open, verberg als al open
-                        setConfirmDeleteId((cur) => (cur === p.id ? null : p.id))
-                      }
-                    >
-                      Delete
+                    <Button size="sm" variant="bordered" onPress={() => setConfirmDeleteId(null)} className="flex-1">
+                      Annuleren
                     </Button>
                   </div>
-
-                  {/* Inline verwijderbevestiging — alleen zichtbaar voor het geselecteerde project */}
-                  {confirmDeleteId === p.id ? (
-                    <div className="rounded border border-red-500/30 bg-red-500/10 p-2 text-sm">
-                      <div className="mb-2">
-                        Weet je zeker dat je <b>{p.name}</b> wilt verwijderen?
-                      </div>
-                      <div className="flex gap-2">
-                        {/* Bevestigingsknop voor definitief verwijderen */}
-                        <Button
-                          size="sm"
-                          color="danger"
-                          onPress={() => onDelete(p.id)}
-                          isLoading={isPending}
-                        >
-                          Ja, verwijderen
-                        </Button>
-                        {/* Annuleerknop om de verwijderbevestiging te sluiten */}
-                        <Button
-                          size="sm"
-                          variant="bordered"
-                          onPress={() => setConfirmDeleteId(null)}
-                        >
-                          Annuleren
-                        </Button>
-                      </div>
-                    </div>
-                  ) : null}
                 </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+              ) : null}
+            </div>
+          ))
+        )}
+      </div>
 
-      {/* Aanmaken modal — voor het toevoegen van een nieuw project */}
-      <Modal isOpen={createOpen} onOpenChange={setCreateOpen} size="2xl" scrollBehavior="inside">
+      {/* Desktop weergave: tabel layout — verborgen op kleine schermen */}
+      <div className="hidden md:block">
+        <Table aria-label="Existing projects" removeWrapper>
+          <TableHeader>
+            <TableColumn>Name</TableColumn>
+            <TableColumn>Description</TableColumn>
+            <TableColumn>Updated</TableColumn>
+            <TableColumn>Actions</TableColumn>
+          </TableHeader>
+          <TableBody emptyContent="No projects yet.">
+            {projects.map((p) => (
+              <TableRow key={p.id}>
+                {/* Projectnaam en ID cel */}
+                <TableCell>
+                  <div className="font-semibold max-w-[220px] truncate">{p.name}</div>
+                  <div className="text-xs text-muted-foreground truncate max-w-[220px]">
+                    {p.id}
+                  </div>
+                </TableCell>
+                {/* Beschrijvingspreview — afgekapt op 2 regels */}
+                <TableCell>
+                  <div className="text-sm text-primary/70 max-w-[520px] overflow-hidden" style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                  }}>
+                    {p.description}
+                  </div>
+                </TableCell>
+                {/* Aanmaakdatum geformatteerd als lokale datum */}
+                <TableCell>
+                  <div className="text-sm text-muted-foreground">
+                    {p.created_at ? new Date(p.created_at).toLocaleDateString() : "-"}
+                  </div>
+                </TableCell>
+                {/* Actieknoppen: bewerken en verwijderen */}
+                <TableCell>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="bordered" onPress={() => openEdit(p.id)}>
+                        Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="danger"
+                        variant="flat"
+                        onPress={() => setConfirmDeleteId((cur) => (cur === p.id ? null : p.id))}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+
+                    {/* Inline verwijderbevestiging */}
+                    {confirmDeleteId === p.id ? (
+                      <div className="rounded border border-red-500/30 bg-red-500/10 p-2 text-sm">
+                        <div className="mb-2">
+                          Weet je zeker dat je <b>{p.name}</b> wilt verwijderen?
+                        </div>
+                        <div className="flex gap-2">
+                          <Button size="sm" color="danger" onPress={() => onDelete(p.id)} isLoading={isPending}>
+                            Ja, verwijderen
+                          </Button>
+                          <Button size="sm" variant="bordered" onPress={() => setConfirmDeleteId(null)}>
+                            Annuleren
+                          </Button>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Aanmaken modal — full-screen op mobiel, groot op desktop */}
+      <Modal isOpen={createOpen} onOpenChange={setCreateOpen} size="2xl" scrollBehavior="inside" classNames={{ base: "mx-2 sm:mx-auto" }}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -381,8 +430,8 @@ export default function AdminProjectsClient({
         </ModalContent>
       </Modal>
 
-      {/* Bewerk modal — voor het aanpassen van een bestaand project */}
-      <Modal isOpen={editOpen} onOpenChange={setEditOpen} size="2xl" scrollBehavior="inside">
+      {/* Bewerk modal — responsive sizing */}
+      <Modal isOpen={editOpen} onOpenChange={setEditOpen} size="2xl" scrollBehavior="inside" classNames={{ base: "mx-2 sm:mx-auto" }}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -466,8 +515,8 @@ export default function AdminProjectsClient({
         </ModalContent>
       </Modal>
 
-      {/* Beschrijving bewerk modal — apart modal met side-by-side editor en preview */}
-      <Modal isOpen={descOpen} onOpenChange={setDescOpen} size="5xl" scrollBehavior="inside">
+      {/* Beschrijving bewerk modal — gestapeld op mobiel, side-by-side op desktop */}
+      <Modal isOpen={descOpen} onOpenChange={setDescOpen} size="5xl" scrollBehavior="inside" classNames={{ base: "mx-2 sm:mx-auto" }}>
         <ModalContent>
           {(onClose) => (
             <>
